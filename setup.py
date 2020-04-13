@@ -2,58 +2,74 @@ import os
 import shutil
 import subprocess
 
-from setuptools import setup, Extension
+from setuptools import setup, Extension, Command, find_packages
 
-from Cython.Build import cythonize
-from Cython.Distutils import build_ext as build_ext_orig
+from Cython.Build import build_ext
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-BUILD_DIR = os.path.join(BASE_DIR, 'build')
-LIBRARY_DIR = os.path.join(BASE_DIR, 'vendor', 'base64')
+BUILD_DIR = os.path.join(BASE_DIR, 'vendor', 'build')
+VENDOR_DIR = os.path.join(BASE_DIR, 'vendor', 'base64')
+INSTALL_DIR = os.path.join(BASE_DIR, 'vendor', 'install')
+LIBRARY_DIR = os.path.join(INSTALL_DIR, 'static')
+INCLUDE_DIR = os.path.join(INSTALL_DIR, 'include')
 
-INCLUDE_DIR = os.path.join(BASE_DIR, 'vendor', 'base64', 'include')
 
+class build_cmake(Command):
+    user_options = []
 
-class build_ext(build_ext_orig):
+    def initialize_options(self):
+        self.args = []
+        self.build_dir = None
+        self.install_dir = None
+        self.library_dir = None
+    
+    def finalize_options(self):
+        if os.path.exists(self.build_dir):
+            shutil.rmtree(self.build_dir)
+        os.mkdir(self.build_dir)
+        self.args.append('-DCMAKE_INSTALL_PREFIX={}'.format(self.install_dir))
+    
     def build_lib(self):
-        if os.path.exists(BUILD_DIR):
-            shutil.rmtree(BUILD_DIR)
-        os.mkdir(BUILD_DIR)
-        cmake_args = [
-            '-DCMAKE_BUILD_TYPE=Release',
-            '-DB64_STREAM_BUILD_TESTS=OFF'
-        ]
-        subprocess.run(['cmake'] + cmake_args + [LIBRARY_DIR], cwd=BUILD_DIR, check=True)
-        subprocess.run(['cmake', '--build', '.'], cwd=BUILD_DIR, check=True)
+        subprocess.run(['cmake'] + self.args + [self.library_dir], cwd=self.build_dir, check=True)
+        subprocess.run(['cmake', '--build', '.', '--target', 'install'], cwd=self.build_dir, check=True)
 
-    def build_extensions(self):
-        lib_path = os.path.join(BUILD_DIR, 'libb64_stream.a')
-        if not os.path.exists(lib_path):
-            self.build_lib()
-
-        self.compiler.add_library('b64_stream')
-        self.compiler.add_library_dir(BUILD_DIR)
-        self.compiler.add_include_dir(INCLUDE_DIR)
-
-        super().build_extensions()
+    def run(self):
+        self.build_lib()
 
 
 extensions = [
-    Extension('b64_stream.wrapper', ['b64_stream/wrapper.pyx']),
+    Extension(
+        'b64_stream._b64_stream',
+        ['b64_stream/_b64_stream.pyx'],
+        libraries=['b64_stream'],
+        library_dirs=[LIBRARY_DIR],
+        include_dirs=[INCLUDE_DIR],
+        language='c',
+    ),
 ]
 
 setup(
     name='b64_stream',
+    version='0.0.1',
     description='Base64 stream encode/decode library',
     url='https://github.com/ikrivosheev/py-base64',
     license='Apache 2',
     author='Ivan Krivosheev',
     author_email='py.krivosheev@gmail.com',
-    packages=['b64_stream'],
+    packages=find_packages(exclude=('tests', )),
     python_requires=">=3.5",
     include_package_data=True,
-    ext_modules=cythonize(extensions),
+    ext_modules=extensions,
     cmdclass={
+        'build_cmake': build_cmake,
         'build_ext': build_ext,
+    },
+    options={
+        'build_cmake': {
+            'build_dir': BUILD_DIR,
+            'library_dir': VENDOR_DIR, 
+            'install_dir': INSTALL_DIR,
+            'args': ['-DCMAKE_BUILD_TYPE=Release', '-DB64_STREAM_BUILD_TESTS=OFF', '-DB64_STREAM_BUILD_EXE=OFF']
+        }
     }
 )
