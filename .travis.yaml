@@ -23,10 +23,6 @@ compiler:
 
 script:
     - pip install -r requirements.txt
-    - python setup.py build_cmake
-    - python setup.py build_ext
-    - python setup.py develop
-    - python tests/test_decode.py
-    - python tests/test_encode.py
-
+    - python setup.py build_cmake build_ext install
+    - pytest tests
 

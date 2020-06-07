@@ -69,7 +69,7 @@ setup(
             'build_dir': BUILD_DIR,
             'library_dir': VENDOR_DIR, 
             'install_dir': INSTALL_DIR,
-            'args': ['-DCMAKE_BUILD_TYPE=Release', '-DB64_STREAM_BUILD_TESTS=OFF', '-DB64_STREAM_BUILD_EXE=OFF']
+            'args': ['-DCMAKE_BUILD_TYPE=Debug', '-DB64_STREAM_BUILD_TESTS=OFF', '-DB64_STREAM_BUILD_EXE=OFF']
         },
     }
 )
