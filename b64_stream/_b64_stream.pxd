@@ -1,3 +1,5 @@
+#cython: language_level=3
+
 cdef extern from 'b64_stream.h':
 
     # Decode
