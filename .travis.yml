@@ -1,9 +1,6 @@
 language: python
-services: docker
 
 os: linux
-install: skip
-
 arch:
   - amd64
   - arm64
@@ -16,13 +13,19 @@ python:
 git:
     submodules: true
 
+cache:
+    pip
+
 compiler:
   - clang
   - gcc
 
+install:
+    - pip install --upgrade pip setuptools wheel
+    - pip install -r requirements.txt
+    - pip install -r requirements-test.txt
 
 script:
-    - pip install -r requirements.txt
     - python setup.py build_cmake build_ext install
     - pytest tests
 
