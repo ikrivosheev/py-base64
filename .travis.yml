@@ -23,10 +23,8 @@ compiler:
 install:
     - pip install --upgrade pip setuptools wheel
     - pip install -r requirements.txt
-    - pip install -r requirements-test.txt
-    - python setup.py build_cmake 
-    - pip install .
+    - python setup.py build_cmake
 
 script:
-    - pytest tests
+    - python setup.py test
 
