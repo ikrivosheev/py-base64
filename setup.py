@@ -2,7 +2,7 @@ import os
 import shutil
 import subprocess
 
-from setuptools import setup, Extension, Command, find_packages
+from setuptools import setup, Extension, Command
 
 from Cython.Build import build_ext
 
@@ -49,17 +49,19 @@ extensions = [
 ]
 
 setup(
-    name='b64_stream',
+    name='b64-stream',
     version='0.0.1',
     description='Base64 stream encode/decode library',
     url='https://github.com/ikrivosheev/py-base64',
     license='Apache 2',
     author='Ivan Krivosheev',
     author_email='py.krivosheev@gmail.com',
-    packages=find_packages(exclude=('tests', )),
+    packages=['b64_stream'],
     python_requires=">=3.5",
     include_package_data=True,
     ext_modules=extensions,
+    setup_requires=['pytest-runner'],
+    tests_require=['pytest'],
     cmdclass={
         'build_cmake': build_cmake,
         'build_ext': build_ext,
