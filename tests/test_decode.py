@@ -12,8 +12,8 @@ def test_decode(chunks, expected):
     decoder = Base64StreamDecode()
     result = []
     for chunk in chunks:
-        r_chunk = decoder.update(chunk)
-        result.append(r_chunk)
+        for r_chunk in decoder.update(chunk):
+            result.append(r_chunk)
     decoder.finalize()
 
     assert b''.join(result) == expected
