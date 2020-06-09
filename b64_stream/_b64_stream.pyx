@@ -29,10 +29,17 @@ cdef class Base64StreamDecode:
         if self._buffer is NULL:
             raise MemoryError()
         self._chunk_size = buffer_size * 4 // 3
-    
+
+    @property
+    def chunk_size(self):
+        return self._chunk_size
+
     @property
     def total(self):
         return self._c_state.out_len
+
+    def clear(self):
+        _b64_stream.b64_stream_decode_init(self._c_state)
 
     def update(self, data):
         cdef size_t length
@@ -53,7 +60,7 @@ cdef class Base64StreamDecode:
         result = _b64_stream.b64_stream_decode_final(self._c_state)
         if not result:
             raise ValueError('Incorrect padding')
-
+    
     def __dealloc__(self):
         free(self._c_state)
         free(self._buffer)
@@ -78,6 +85,13 @@ cdef class Base64StreamEncode:
     @property
     def total(self):
         return self._c_state.out_len
+    
+    @property
+    def chunk_size(self):
+        return self._chunk_size
+
+    def clear(self):
+        _b64_stream.b64_stream_encode_init(self._c_state)
 
     def update(self, data):
         cdef size_t length
