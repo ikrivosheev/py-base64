@@ -28,3 +28,11 @@ install:
 script:
     - python setup.py test
 
+deploy:
+    provider: pipy
+    username: "__token__"
+    distributions: "sdist bdist_wheel"
+    skip_existing: true
+    on:
+        tags: true
+
