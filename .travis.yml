@@ -16,14 +16,10 @@ git:
 cache:
     pip
 
-compiler:
-  - clang
-  - gcc
 
 install:
     - pip install --upgrade pip setuptools wheel
     - pip install -r requirements.txt
-    - python setup.py build_cmake
 
 script:
     - python setup.py test
