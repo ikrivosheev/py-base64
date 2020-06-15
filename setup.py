@@ -50,7 +50,7 @@ extensions = [
 
 setup(
     name='b64-stream',
-    version='0.0.1',
+    version='0.0.2',
     description='Base64 stream encode/decode library',
     url='https://github.com/ikrivosheev/py-base64',
     license='Apache 2',
