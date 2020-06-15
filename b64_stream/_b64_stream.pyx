@@ -15,13 +15,19 @@ def chunks(data, count):
 
 cdef class BufferedBase64Stream:
     cdef char* _buffer
+    cdef size_t _buffer_size
     cdef size_t _chunk_size
 
     def __init__(self, size_t buffer_size = 2 ** 10):
+        self._buffer_size = buffer_size
         self._buffer = <char*> malloc(sizeof(char) * buffer_size)
         if self._buffer is NULL:
             raise MemoryError()
     
+    @property
+    def buffer_size(self):
+        return self._buffer_size
+
     @property
     def chunk_size(self):
         return self._chunk_size
@@ -58,7 +64,7 @@ cdef class Base64StreamDecode(BufferedBase64Stream):
             raise MemoryError()
         _b64_stream.b64_stream_decode_init(self._c_state)
         
-        self._chunk_size = buffer_size * 4 // 3
+        self._chunk_size = (buffer_size + 3) // 4 * 3
 
     @property
     def total(self):
@@ -98,7 +104,7 @@ cdef class Base64StreamEncode(BufferedBase64Stream):
             raise MemoryError()
         _b64_stream.b64_stream_encode_init(self._c_state)
         
-        self._chunk_size = buffer_size * 3 // 4
+        self._chunk_size = ((buffer_size + 2) // 3 * 4) + 1
     
     @property
     def total(self):

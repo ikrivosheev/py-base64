@@ -1,5 +1,5 @@
-recursive-include b64_stream *.pyx *.pxd *.pxi *.py *.c *.h
+recursive-include b64_stream *.pyx *.pxd *.pxi *.py *.c
 recursive-include vendor/base64 *
 recursive-exclude vendor/base64/.git *
-recursive-exclude vendor/base64/.travis.yml
+exclude vendor/base64/.travis.yml
 include LICENSE README.md 
