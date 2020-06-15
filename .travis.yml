@@ -29,7 +29,7 @@ script:
     - python setup.py test
 
 deploy:
-    provider: pipy
+    provider: "pypi"
     username: "__token__"
     distributions: "sdist bdist_wheel"
     skip_existing: true
