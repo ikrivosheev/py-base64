@@ -25,10 +25,8 @@ script:
     - python setup.py test
 
 deploy:
-    provider: "pypi"
-    username: "__token__"
-    distributions: "sdist bdist_wheel"
-    skip_existing: true
+    provider: script
+    script: build-script/travis-release.sh
     on:
         tags: true
 
