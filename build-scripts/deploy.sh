@@ -14,4 +14,4 @@ for whl in "$wheelhouse"/*; do
 done
 
 python setup.py sdist
-twine upload upload dist/*.whl dist/*.tar.*
+twine upload dist/*.whl dist/*.tar.*
