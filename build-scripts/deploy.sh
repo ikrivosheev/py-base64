@@ -4,7 +4,7 @@ set -e
 
 wheelhouse="/tmp/wheel/"
 
-pip install twine wheel
+pip install twine wheel auditwheel
 pip wheel . --wheel-dir "$wheelhouse"
 
 # Bundle external shared libraries into the wheels.
