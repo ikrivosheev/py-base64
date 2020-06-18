@@ -11,5 +11,5 @@ for whl in dist/*.whl; do
     rm dist/*-linux_*.whl
 done
 
-twine upload dist/*.whl dist/*.tar.*
+twine upload --skip-existing dist/*.whl dist/*.tar.*
 
