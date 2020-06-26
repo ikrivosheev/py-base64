@@ -20,15 +20,16 @@ pip install b64-stream
 
 **b64-stream** implements classes: 
 
-1. Base64StreamDecode
-2. Base64StreamEncode
+1. `Base64StreamDecode`
+2. `Base64StreamEncode`
 
 Every class has:
 
-1. **buffer_size** - size of buffer  for update method
+0. **\_\_init\_\_(buffer_size: int = 2000)** - **buffer_size** used by create buffer for **update** method for new encoded/decoded chunk. 
+1. **buffer_size** - size of buffer
 3. **total** - total encoded/decoded bytes
 4. **clear()** - reset state to initial
-5. **update(chunk)** - processing one chunk
+5. **update(chunk)** - processing chunk
 6. **finalize()** - end of processing
 
 
