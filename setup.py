@@ -100,10 +100,17 @@ extensions = [
     ),
 ]
 
+
+with open(os.path.join(os.path.dirname(__file__), 'README.md')) as fd:
+    readme = fd.read()
+
+
 setup(
     name='b64-stream',
-    version='0.0.3',
+    version='1.0.0',
     description='Base64 stream encode/decode library',
+    long_description=readme,
+    long_description_content_type='text/markdown',
     url='https://github.com/ikrivosheev/py-base64',
     license='Apache 2',
     author='Ivan Krivosheev',
@@ -112,6 +119,7 @@ setup(
     python_requires=">=3.5",
     include_package_data=True,
     ext_modules=extensions,
+    install_requires=[],
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
     cmdclass={
@@ -119,7 +127,7 @@ setup(
         'build_ext': b64_stream_build_ext,
     },
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Build Tools',
         'License :: OSI Approved :: Apache Software License',
@@ -127,5 +135,6 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: Implementation :: CPython',
     ]
 )
