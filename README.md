@@ -52,6 +52,7 @@ decoder.finalize()
 #### Encode data
 
 ```python
+from b64_stream import Base64StreamEncode
 
 chunks = [b'1234567', b'1234567']
 encoder = Base64StreamEncode()
