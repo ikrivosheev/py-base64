@@ -4,9 +4,9 @@
 [![License](https://img.shields.io/pypi/l/b64-stream)](https://pypi.org/project/b64-stream/)
 
 
-# py-base64
+# b64-stream
 
-**py-base64** is a Python binding for the [b64-stream](https://github.com/ikrivosheev/base64). 
+**b64-stream** is a Python binding for the [b64-stream](https://github.com/ikrivosheev/base64). 
 This is Base64 stream encode/decode library.
 
 
@@ -15,6 +15,22 @@ This is Base64 stream encode/decode library.
 ```
 pip install b64-stream
 ```
+
+### Getting started
+
+**b64-stream** implements classes: 
+
+1. Base64StreamDecode
+2. Base64StreamEncode
+
+Every class has:
+
+1. **buffer_size** - size of buffer  for update method
+3. **total** - total encoded/decoded bytes
+4. **clear()** - reset state to initial
+5. **update(chunk)** - processing one chunk
+6. **finalize()** - end of processing
+
 
 ### Usage examples
 
@@ -37,7 +53,7 @@ decoder.finalize()
 ```python
 
 chunks = [b'1234567', b'1234567']
-encoder = Base64StreamEncode(buffer_size)
+encoder = Base64StreamEncode()
 result = []
 for chunk in chunks:
     for r_chunk in encoder.update(chunk):
